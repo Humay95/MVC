@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.activeStudent == null)
+{
+    <div class="alert alert-info">
+        <span class="alert">@ViewBag.Error</span>
+    </div>
+}else {
+<h2>@ViewBag.activeStudent.Firstname</h2>
+
+}
+

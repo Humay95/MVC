@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="studentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_Groups" FromRole="Groups" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Score">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject_id" Type="Int32" />
+    <Property Name="Users_id" Type="Int32" />
+    <Property Name="Points" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Subject" Relationship="Self.FK_Scores_Subject" FromRole="Scores" ToRole="Subject" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Scores_Users" FromRole="Scores" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_Subject" FromRole="Subject" ToRole="Scores" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="Int32" Nullable="false" />
+    <Property Name="Group_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Users_Groups" FromRole="Users" ToRole="Groups" />
+    <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_Users" FromRole="Users" ToRole="Scores" />
+  </EntityType>
+  <Association Name="FK_Users_Groups">
+    <End Role="Groups" Type="Self.Group" Multiplicity="1" />
+    <End Role="Users" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="Group_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Scores_Subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+    <End Role="Scores" Type="Self.Score" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Scores">
+        <PropertyRef Name="Subject_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Scores_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Scores" Type="Self.Score" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Scores">
+        <PropertyRef Name="Users_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="studentEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Groups" EntityType="Self.Group" />
+    <EntitySet Name="Scores" EntityType="Self.Score" />
+    <EntitySet Name="Subjects" EntityType="Self.Subject" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Users_Groups" Association="Self.FK_Users_Groups">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Scores_Subject" Association="Self.FK_Scores_Subject">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Scores" EntitySet="Scores" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Scores_Users" Association="Self.FK_Scores_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Scores" EntitySet="Scores" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

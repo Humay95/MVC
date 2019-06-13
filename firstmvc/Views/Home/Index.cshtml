@@ -1,0 +1,29 @@
+﻿@using firstmvc.Models
+@{
+    ViewBag.Title = "Home Page";
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Group name</th>
+            <th>See</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var st in ViewBag.allStudents)
+        {
+        <tr>
+            <td>@st.Firstname @st.Lastname</td>
+            <td>@st.Email</td>
+            <td>@st.Phone</td>
+            <td>@st.Group.Name</td>
+            <td><a href="/Home/Details/@st.id">
+             View</a><a href="/Home/Edit/@st.id">Edit</a></td>
+        </tr>
+        }
+    </tbody>
+   
+</table>
